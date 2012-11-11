@@ -20,10 +20,10 @@
 			.content {
 				padding-top:55px;
 			}
-			.job-category{
+			.job-category,.cluster-category{
 				opacity:0.6;
 			}
-			.job-row{
+			.job-row,.cluster-row{
 				opacity:0.6;
 			}
 		    body,
@@ -58,17 +58,31 @@
 	<script src="lib/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
 	<script src="lib/toastr.js"></script>
+	<script src="lib/smoothie.js"></script>
     <!-- src -->
     <script type="text/javascript">
 		var app = angular.module('gunjamada', []);
 
-		app.directive ('state', function() { 
+		app.directive ('jobState', function() { 
 			return {
 		  		link: function (scope, element, attribs) {
 					if(scope.job.state == 'RUNNING'){
 						element.addClass("label-info");
 					}
 					else if(scope.job.state == 'COMPLETED'){
+						element.addClass("label-success");
+					}
+				}
+			}
+		});
+		
+		app.directive ('clusterState', function() { 
+			return {
+		  		link: function (scope, element, attribs) {
+					if(scope.cluster.state == 'RUNNING'){
+						element.addClass("label-info");
+					}
+					else if(scope.cluster.state == 'COMPLETED'){
 						element.addClass("label-success");
 					}
 				}
@@ -101,7 +115,30 @@
 		}
 		
 		function ClustersCtrl($scope,$http){
-		
+			$scope.getClusters = function(){
+				/*$http.get("").success(function(d){
+					$scope.jobs = d;
+				});*/
+				var oldClusters = $scope.clusters;
+				$scope.clusters = [
+					{state:'RUNNING',name:'Cluster 1',startedAt:new Date(),readyAt:new Date()},
+					{state:'RUNNING',name:'Cluster 2',startedAt:new Date(),readyAt:new Date()}
+				];
+				
+				/*var smoothie1 = new SmoothieChart();
+				smoothie.streamTo(document.getElementById("canvas0"));
+				
+				var smoothie2 = new SmoothieChart();
+				smoothie.streamTo(document.getElementById("canvas1"));*/
+				
+				setTimeout(function(){
+					toastr.success($scope.clusters[0].name + " is " + $scope.clusters[0].state);
+				},1000);
+				setTimeout(function(){
+					toastr.error($scope.clusters[1].name + " is " + $scope.clusters[1].state);
+				},4000);
+			}
+			$scope.getClusters();
 		}
 	</script>
 </html>

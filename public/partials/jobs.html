@@ -1,5 +1,5 @@
 <h2>Jobs</h2>
-<div class="row-fluid" style="padding-bottom:21px;">
+<div class="row-fluid" style="padding-bottom:13px;">
 	<div class="span3">
 		<p>A brief summary of your jobs.</p>
 	</div>
@@ -27,7 +27,7 @@
 		</table>
 	</div>
 	<div class="span9 offset1">
-		<table class="table table-hover jobs-table">
+		<table class="table table-hover">
 			<tr>
 				<th>Name</th>
 				<th>Started</th>
@@ -39,7 +39,7 @@
 			<tr ng-repeat="job in jobs | filter:jobSearch" class="job-row">
 				<th>{{job.name}}</th>
 				<th>{{job.startedAt | date:'medium'}}</th>
-				<th><span class="label" state src="job.id">{{job.state}}</th>
+				<th><span class="label" job-state src="job.id">{{job.state}}</th>
 				<th>{{job.finishedAt | date:'medium'}}</th>
 				<th>{{job.instanceId}}</th>
 				<th><a ng-href="{{job.logUri}}" target="_new">Logs</a></th>
