@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" ng-app="gunjamada">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gunjamada - App</title>
+	    <link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/bootstrap-responsive.css" />
+		<link rel="stylesheet" href="css/toastr.css" />
+		<link rel="stylesheet" href="css/toastr-responsive.css" />
+		<style>
+			/* 
+			  Allow angular.js to be loaded in body, hiding cloaked elements until 
+			  templates compile.  The !important is important given that there may be 
+			  other selectors that are more specific or come later and might alter display.  
+			 */
+			[ng\:cloak], [ng-cloak], .ng-cloak {
+			  display: none !important;
+			}
+			.content {
+				padding-top:55px;
+			}
+			.job-category{
+				opacity:0.6;
+			}
+			.job-row{
+				opacity:0.6;
+			}
+		    body,
+		    p,
+		    li{
+		      font-size: 14px;
+		      line-height: 20px;
+		      font-family: 'Helvetica Neue';
+		    }
+		    h1, h2, h3, h4, h5, h6 {
+		      text-rendering: optimizeLegibility;
+		    }
+		</style>
+    </head>
+    <body ng-cloak>
+    	<div class="container-fluid">
+			<div class="navbar navbar-fixed-top">
+		  		<div class="navbar-inner">
+		  			<div class="container-fluid">
+		  				<a class="brand" href="#">Gunjamada</a>
+		  			</div>
+		    	</div>
+		 	 </div>
+		  	<div class="content" ng-cloak>
+	      		<div class="row-fluid" ng-include src="'partials/jobs.html'" ng-controller="JobsCtrl"></div>
+				<div class="row-fluid" ng-include src="'partials/clusters.html'" ng-controller="ClustersCtrl"></div>
+		  	</div>
+		</div>
+    </body>
+    <!-- libs -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="lib/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+	<script src="lib/toastr.js"></script>
+    <!-- src -->
+    <script type="text/javascript">
+		var app = angular.module('gunjamada', []);
+
+		app.directive ('state', function() { 
+			return {
+		  		link: function (scope, element, attribs) {
+					if(scope.job.state == 'RUNNING'){
+						element.addClass("label-info");
+					}
+					else if(scope.job.state == 'COMPLETED'){
+						element.addClass("label-success");
+					}
+				}
+			}
+		});
+		
+		function JobsCtrl($scope,$http){
+			$scope.getJobs = function(){
+				/*$http.get("").success(function(d){
+					$scope.jobs = d;
+				});*/
+				var oldJobs = $scope.jobs;
+				$scope.jobs = [
+					{state:'RUNNING',name:'Job 1',startedAt:new Date(),logUri:'http://www.google.com',instanceId:1},
+					{state:'RUNNING',name:'Job 2',startedAt:new Date(),logUri:'http://www.google.com',instanceId:2},
+					{state:'COMPLETED',name:'Job 3',startedAt:new Date(),logUri:'http://www.google.com',instanceId:1,finishedAt:new Date()}
+				];
+				
+				setTimeout(function(){
+					toastr.success($scope.jobs[0].name + " is " + $scope.jobs[0].state);
+				},1000);
+				setTimeout(function(){
+					toastr.info($scope.jobs[2].name + " is " + $scope.jobs[2].state);
+				},3000);
+				setTimeout(function(){
+					toastr.error($scope.jobs[1].name + " is " + $scope.jobs[1].state);
+				},4000);
+			}
+			$scope.getJobs();
+		}
+		
+		function ClustersCtrl($scope,$http){
+		
+		}
+	</script>
+</html>
